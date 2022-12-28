@@ -1,14 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <style id="style">
+        body {
+            background: url("wallpaper.png") no-repeat center center fixed;
+            background-size: cover;
+        }
+    </style>
 </head>
-<body>
-    <p>
-        Hello World
-    </p>
+
+<body id="body">
+    <script>
+        /* Particle Emitter Code made by David */
+
+        var ParticleArea = function () {
+            this.minX = 0;
+            this.maxX = 0;
+            this.minY = 0;
+            this.maxY = 0;
+            this.Create = function (minX, maxX, minY, maxY) {
+                this.minX = minX;
+                this.maxX = maxX;
+                this.minY = minY;
+                this.maxY = maxY;
+                return this;
+            }
+        }
+        var ParticleEmitter = function () {
+            this.Enabled = true;
+            this.Create = function (spawnarea, endarea, time, amountpersec, pics, picSizeX, picSizeY, particleid, maxrotation, maxrotationovertime) {
+                var particlei = 0;
+                var particlename = particleid + particlei;
+                setInterval(function () {
+                    if (true) {
+                        var style = document.getElementById('style');
+                        var spawnX = Math.floor(Math.random() * (Math.floor(spawnarea.maxX) - Math.ceil(spawnarea.minX))) + Math.ceil(spawnarea.minX);
+                        var spawnY = Math.floor(Math.random() * (Math.floor(spawnarea.maxY) - Math.ceil(spawnarea.minY))) + Math.ceil(spawnarea.minY);
+                        var endX = Math.floor(Math.random() * (Math.floor(endarea.maxX) - Math.ceil(endarea.minX))) + Math.ceil(endarea.minX);
+                        var endY = Math.floor(Math.random() * (Math.floor(endarea.maxY) - Math.ceil(endarea.minY))) + Math.ceil(endarea.minY);
+                        var particle = document.createElement("div");
+                        particle.className = "particle";
+                        particle.id = "particle" + particlename;
+                        particle.style.position = "fixed";
+                        particle.style.left = spawnX + "px";
+                        particle.style.top = spawnY + "px";
+                        particle.style.width = picSizeX + "px";
+                        particle.style.height = picSizeY + "px";
+                        particle.style.background = "url(" + pics[Math.floor(Math.random() * pics.length)] + ")";
+                        particle.style.backgroundRepeat = "no-repeat";
+                        particle.style.backgroundPosition = "center center"
+                        particle.style.backgroundSize = "cover";
+                        particle.addEventListener('animationend', function() {
+                            style.innerHTML = style.innerHTML.replace(animcss, "");
+                            particle.remove();
+                        });
+                        document.getElementById("body").appendChild(particle);
+                        var rotation = Math.floor(Math.random() * (Math.floor(maxrotation)));
+                        var rotationovertime = Math.floor(Math.random() * (Math.floor(maxrotationovertime))) + rotation;
+                        var animcss = `
+                        @keyframes ` + particlename + `keyframes {
+                            0% {
+                                left: ` + spawnX + `px;
+                                top: ` + spawnY + `px;
+                                transform: rotate(` + rotation + `deg);
+                            }
+                            100% {
+                                left: ` + endX + `px;
+                                top: ` + endY + `px;
+                                transform: rotate(` + rotationovertime + `deg);
+                            }
+                        }
+                        #` + particle.id + ` {
+                            animation-name: ` + particlename + `keyframes;
+                            animation-duration: ` + time + `s;
+                            transition-timing-function: cubic-bezier(0.325, 0.385, 0.695, 0.440);
+                            animation-delay: 0s;
+                            animation-iteration-count: 1;
+                            animation-fill-mode: forwards;
+                        }
+                        `;
+                        style.innerHTML += animcss;
+                        particlei += 1;
+                        particlename = particleid + particlei;
+                    }
+                }, 1000 / amountpersec);
+            }
+        }
+        var leafspawnarea = new ParticleArea().Create(0, window.innerWidth, 0, 0);
+        var leafendarea = new ParticleArea().Create(0, window.innerWidth, window.innerHeight, window.innerHeight);
+        var leafemitter = new ParticleEmitter().Create(leafspawnarea, leafendarea, 8, 5, ["leaf.png", "leaf.png", "leaf.png", "leaf2.png"], 20, 20, "leaf", 90, 45);
+
+        
+    </script>
 </body>
+
 </html>
