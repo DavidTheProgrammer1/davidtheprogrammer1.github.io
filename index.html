@@ -55,7 +55,7 @@
                             style.innerHTML = style.innerHTML.replace(animcss, "");
                             particle.remove();
                         });
-                        document.getElementById("body").appendChild(particle);
+                        document.body.appendChild(particle);
                         var rotation = Math.floor(Math.random() * (Math.floor(maxrotation)));
                         var rotationovertime = Math.floor(Math.random() * (Math.floor(maxrotationovertime))) + rotation;
                         var animcss = `
